@@ -1,0 +1,23 @@
+cmake_minimum_required(VERSION 3.7)
+project(SillyComplier)
+
+set(CMAKE_CXX_STANDARD 14)
+
+option(SHAREDLIB ON)
+enable_testing()
+find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
+
+aux_source_directory(src/SLScanner SLSRCScanner)
+aux_source_directory(test/SLScanner SLTSRCScanner)
+if (SHAREDLIB EQUAL ON)
+    add_library(SLScanner SHARED ${SLSRCScanner})
+else ()
+    add_library(SLScanner STATIC ${SLSRCScanner})
+endif ()
+add_executable(TESTScanner ${SLTSRCScanner})
+target_include_directories(TESTScanner PUBLIC include)
+target_link_libraries(TESTScanner ${GTEST_BOTH_LIBRARIES})
+target_link_libraries(TESTScanner SLScanner)
+add_test(SLTESTScanner TESTScanner)
+target_include_directories(SLScanner PUBLIC include)
