@@ -19,6 +19,9 @@ namespace Silly {
         ETransitionSet nETransitions;
         StateSet nAcceptingStates;
         bool constructed;
+
+        void construct();
+
     public:
         StateSet eClosure(State input);
 
@@ -30,6 +33,12 @@ namespace Silly {
 
         NondeterministicFiniteAutomaton(StateSet states_, TransitionSet transitions_, ETransitionSet etransitions_,
                                         AlphabetSet alphabets, StateSet acceptingStates);
+
+        virtual State match(std::string str);
+
+        virtual StateType operator()(std::string str);
+
+        virtual void reboot();
     };
 }
 

@@ -20,7 +20,7 @@ Silly::DeterministicFiniteAutomaton::transite(Silly::DeterministicFiniteAutomato
 
 Silly::DeterministicFiniteAutomaton::State Silly::DeterministicFiniteAutomaton::match(std::string str) {
     int i;
-    for (i = 0; i < str.length(); ++i)
+    for (i = 0; str[i] != 0; ++i)
         transite(str[i]);
     isFinished = true;
     return currentState;

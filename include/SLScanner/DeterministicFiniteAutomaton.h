@@ -17,7 +17,6 @@ namespace Silly {
 
         DeterministicFiniteAutomaton() {}
 
-    private:
         bool isFinished;
 
     public:
@@ -27,6 +26,7 @@ namespace Silly {
                                      Silly::DeterministicFiniteAutomaton::StateSet acceptingStates_);
 
         State match(std::string str);
+
         StateType operator()(std::string str);
     };
 }
