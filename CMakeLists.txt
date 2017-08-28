@@ -4,6 +4,7 @@ project(SillyComplier)
 set(CMAKE_CXX_STANDARD 14)
 
 option(SHAREDLIB ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 enable_testing()
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})

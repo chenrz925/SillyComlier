@@ -1,7 +1,3 @@
-//
-// Created by 陈润泽 on 2017/8/11.
-//
-
 #include "SLScanner/FiniteAutomaton.h"
 
 

@@ -1,7 +1,3 @@
-//
-// Created by 陈润泽 on 2017/8/13.
-//
-
 #include <queue>
 #include <iostream>
 #include "SLScanner/NondeterministicFiniteAutomaton.h"
@@ -116,8 +112,8 @@ void Silly::NondeterministicFiniteAutomaton::construct() {
         if (it == acceptingStates.begin())
             std::cout << *it;
         else std::cout << ", " << *it;
-    }*/
-    std::cout << "\n";
+    }
+    std::cout << "\n";*/
     alphabets = nAlphabets;
     constructed = true;
     nAlphabets.clear();

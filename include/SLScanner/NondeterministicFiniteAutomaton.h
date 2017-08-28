@@ -7,6 +7,13 @@
 
 #include "SLScanner/DeterministicFiniteAutomaton.h"
 
+#define SL_GTEST_PROTECTED_OPEN 0
+#if SL_GTEST_PROTECTED_OPEN
+
+#include <gtest/gtest.h>
+
+#endif
+
 namespace Silly {
     class NondeterministicFiniteAutomaton : public DeterministicFiniteAutomaton {
     public:
@@ -22,7 +29,14 @@ namespace Silly {
 
         void construct();
 
-    public:
+        NondeterministicFiniteAutomaton() {}
+
+#if SL_GTEST_PROTECTED_OPEN
+        public:
+#else
+        protected:
+#endif
+
         StateSet eClosure(State input);
 
         StateSet eClosure(StateSet inputs);
@@ -30,6 +44,8 @@ namespace Silly {
         StateSet delta(State inputState, Alphabet inputAlphabet);
 
         StateSet delta(StateSet inputStates, Alphabet inputAlphabet);
+
+    public:
 
         NondeterministicFiniteAutomaton(StateSet states_, TransitionSet transitions_, ETransitionSet etransitions_,
                                         AlphabetSet alphabets, StateSet acceptingStates);
