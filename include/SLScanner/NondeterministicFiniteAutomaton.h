@@ -7,8 +7,8 @@
 
 #include "SLScanner/DeterministicFiniteAutomaton.h"
 
-#define SL_GTEST_PROTECTED_OPEN 0
-#if SL_GTEST_PROTECTED_OPEN
+#define SL_GTEST_PROTECTED_OPEN_NFA 0
+#if SL_GTEST_PROTECTED_OPEN_NFA
 
 #include <gtest/gtest.h>
 
@@ -31,7 +31,7 @@ namespace Silly {
 
         NondeterministicFiniteAutomaton() {}
 
-#if SL_GTEST_PROTECTED_OPEN
+#if SL_GTEST_PROTECTED_OPEN_NFA
         public:
 #else
         protected:

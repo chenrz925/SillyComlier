@@ -24,7 +24,7 @@ TEST(NondeterministicFiniteAutomaton, BaseFunctionTest) {
     for (NondeterministicFiniteAutomaton::State s = 0; s <= 9; ++s)
         testStates.insert(s);
     NondeterministicFiniteAutomaton testAutomaton(testStates, testTransitions, testETransitions, testAlphabets, testAcceptingStates);
-#if SL_GTEST_PROTECTED_OPEN
+#if SL_GTEST_PROTECTED_OPEN_NFA
     EXPECT_EQ(testAutomaton.eClosure(1), NondeterministicFiniteAutomaton::StateSet({1, 2, 3, 4, 6, 9}));
     EXPECT_EQ(testAutomaton.eClosure({0, 1, 5}), NondeterministicFiniteAutomaton::StateSet({0, 1, 2, 3, 4, 5, 6, 8, 9}));
     EXPECT_EQ(testAutomaton.delta(0, 'a'), NondeterministicFiniteAutomaton::StateSet({1}));

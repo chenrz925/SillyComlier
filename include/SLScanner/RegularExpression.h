@@ -4,8 +4,8 @@
 #include "NondeterministicFiniteAutomaton.h"
 #include <memory>
 
-#define SL_GTEST_PROTECTED_OPEN 1
-#if SL_GTEST_PROTECTED_OPEN
+#define SL_GTEST_PROTECTED_OPEN_RE 1
+#if SL_GTEST_PROTECTED_OPEN_RE
 #include <gtest/gtest.h>
 #endif
 
@@ -19,7 +19,6 @@ namespace Silly {
             Alphabet expression;
         } ExpressionTree;
         typedef std::unique_ptr<ExpressionTree> ETreeNode;
-        ETreeNode tree;
         std::string pattern;
     public:
         RegularExpression(std::string pattern_);
@@ -30,11 +29,13 @@ namespace Silly {
 
         virtual StateType operator()(std::string str);
 
-#if SL_GTEST_PROTECTED_OPEN
+#if SL_GTEST_PROTECTED_OPEN_RE
     public:
+        std::string toPostfixFromTree(ETreeNode &node);
 #else
     protected:
 #endif
+        ETreeNode tree;
         std::string toPostfix();
         void buildTree(std::string postfix);
     };
