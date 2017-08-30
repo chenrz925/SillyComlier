@@ -38,6 +38,8 @@ namespace Silly {
         ETreeNode tree;
         std::string toPostfix();
         void buildTree(std::string postfix);
+        void buildNFA();
+        std::pair<State, State> buildNode(const ETreeNode &node);
     };
 }
 

@@ -19,3 +19,8 @@ TEST(RegularExpression, BaseFunctionTest) {
     EXPECT_EQ(testingRegularExpression3.toPostfixFromTree(testingRegularExpression3.tree), testingRegularExpression3.toPostfix());
 #endif
 }
+
+TEST(RegularExpression, BaseTest) {
+    RegularExpression testingRegularExpression = RegularExpression("1+3+5+(2+6)*");
+    EXPECT_EQ(testingRegularExpression["1352626"], true);
+}
