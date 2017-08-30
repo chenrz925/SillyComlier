@@ -116,11 +116,14 @@ void Silly::NondeterministicFiniteAutomaton::construct() {
     std::cout << "\n";*/
     alphabets = nAlphabets;
     constructed = true;
+#if SL_GTEST_NO_CLEAN_NFA
+#else
     nAlphabets.clear();
     nAcceptingStates.clear();
     nStates.clear();
     nTransitions.clear();
     nETransitions.clear();
+#endif
 }
 
 Silly::FiniteAutomaton::State Silly::NondeterministicFiniteAutomaton::match(std::string str) {

@@ -8,17 +8,23 @@ RegularExpression::RegularExpression(std::string pattern_) {
     pattern = pattern_;
     for (Alphabet c : pattern_) {
         if (c != '|' && c != '+' && c != '*' && c != '(' && c != ')')
-            alphabets.insert(c);
+            nAlphabets.insert(c);
     }
     std::string postfix = toPostfix();
     try {
         buildTree(postfix);
-    } catch (std::string str) {
+    } catch (std::string &str) {
+#if SL_GTEST_PROTECTED_OPEN_RE
         std::cerr << str << std::endl;
         std::cerr << "Sample: \"(1|2|3|4)*+5+6\"" << std::endl;
+#endif
     }
+    nStates.insert(StartState);
+#if SL_GTEST_PRINT_FA_RE
+#else
 #if SL_GTEST_PROTECTED_OPEN_RE
     std::cout << "POSTFIX FROM TREE\n" << toPostfixFromTree(tree) << std::endl;
+#endif
 #endif
     buildNFA();
     reboot();
@@ -61,8 +67,11 @@ std::string RegularExpression::toPostfix() {
 }
 
 void RegularExpression::buildTree(std::string postfix) {
+#if SL_GTEST_PRINT_FA_RE
+#else
 #if SL_GTEST_PROTECTED_OPEN_RE
     std::cout << "\nPOSTFIX\n" << postfix << std::endl;
+#endif
 #endif
     std::stack<ETreeNode> working;
     for (char &it : postfix) {
@@ -91,13 +100,14 @@ void RegularExpression::buildNFA() {
     State accept = currentState++;
     nETransitions.insert(ETransition(finalTerm.second, accept));
     nAcceptingStates.insert(accept);
+    nStates.insert(accept);
     construct();
 }
 
 std::pair<FiniteAutomaton::State, FiniteAutomaton::State> RegularExpression::buildNode(const ETreeNode &node) {
     std::pair<State, State> leftTerm(-1, -1), rightTerm(-1, -1);
     if (!node)
-        return std::pair<State, State>(-1, -1);
+        return {-1, -1};
     if (node->left)
         leftTerm = buildNode(node->left);
     if (node->right)
@@ -128,7 +138,7 @@ std::pair<FiniteAutomaton::State, FiniteAutomaton::State> RegularExpression::bui
             nStates.insert(state1);
             nStates.insert(state2);
             nStates.insert(state3);
-            return std::pair<State, State>(state0, state3);
+            return {state0, state3};
         }
         case '|': {
             if (leftTerm.first == -1 || leftTerm.second == -1) {
@@ -149,7 +159,7 @@ std::pair<FiniteAutomaton::State, FiniteAutomaton::State> RegularExpression::bui
             nETransitions.insert(transition3);
             nStates.insert(state0);
             nStates.insert(state1);
-            return std::pair<State, State>(state0, state1);
+            return {state0, state1};
         }
         case '*': {
             if (leftTerm.first == -1 || leftTerm.second == -1) {
@@ -167,18 +177,21 @@ std::pair<FiniteAutomaton::State, FiniteAutomaton::State> RegularExpression::bui
             nETransitions.insert(transition3);
             nStates.insert(state0);
             nStates.insert(state1);
-            return std::pair<State, State>(state0, state1);
+            return {state0, state1};
         }
         default: {
             State state0 = currentState++;
             State state1 = currentState++;
             nTransitions[Move(state0, node->expression)] = state1;
-            return std::pair<State, State>(state0, state1);
+            nStates.insert(state0);
+            nStates.insert(state1);
+            return {state0, state1};
         }
     }
 }
 
 #if SL_GTEST_PROTECTED_OPEN_RE
+
 std::string RegularExpression::toPostfixFromTree(ETreeNode &node) {
     std::string postfix_;
     if (node->left)
@@ -189,4 +202,54 @@ std::string RegularExpression::toPostfixFromTree(ETreeNode &node) {
     return postfix_;
 }
 
+std::string RegularExpression::toMidfixFromTree(ETreeNode &node) {
+    Alphabet midfix_ = node->expression;
+    std::string begin_, end_;
+    if (node->left)
+        begin_ = toMidfixFromTree(node->left);
+    if (node->right)
+        end_ = toMidfixFromTree(node->right);
+    return begin_ + midfix_ + end_;
+}
+
+#endif
+
+#if SL_GTEST_PRINT_FA_RE
+void RegularExpression::printDFA() {
+    std::cout << "[DFA---\"" << pattern << "\"]" << std::endl;
+    std::cout << "-----Constructed: " << constructed << "-----" << std::endl;
+    std::cout << "-----Transitions-----" << std::endl;
+    for (auto it: transitions)
+        std::cout << "<" << it.first.first << "," << it.first.second << ">--->" << it.second << std::endl;
+    std::cout << "-----States-----" << std::endl;
+    for (auto it: states)
+        std::cout << "[" << it << "]" << std::endl;
+    std::cout << "-----Accepting-----" << std::endl;
+    for (auto it: acceptingStates)
+        std::cout << "[" << it << "]" << std::endl;
+    std::cout << "-----Alphabets-----" << std::endl;
+    for (auto it: alphabets) {
+        std::cout << "<" << it << ">" << std::endl;
+    }
+}
+
+void RegularExpression::printNFA() {
+    std::cout << "[NFA---\"" << pattern << "\"]" << std::endl;
+    std::cout << "-----Constructed: " << constructed << "-----" << std::endl;
+    std::cout << "-----Transitions-----" << std::endl;
+    for (auto it: nTransitions)
+        std::cout << "<" << it.first.first << "," << it.first.second << ">--->" << it.second << std::endl;
+    for (auto it: nETransitions)
+        std::cout << "<" << it.first << ",#E#>--->" << it.second << std::endl;
+    std::cout << "-----States-----" << std::endl;
+    for (auto it: nStates)
+        std::cout << "[" << it << "]" << std::endl;
+    std::cout << "-----Accepting-----" << std::endl;
+    for (auto it: nAcceptingStates)
+        std::cout << "[" << it << "]" << std::endl;
+    std::cout << "-----Alphabets-----" << std::endl;
+    for (auto it: nAlphabets) {
+        std::cout << "<" << it << ">" << std::endl;
+    }
+}
 #endif

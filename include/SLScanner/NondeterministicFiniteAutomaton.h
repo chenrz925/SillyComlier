@@ -14,6 +14,8 @@
 
 #endif
 
+#define SL_GTEST_NO_CLEAN_NFA 0
+
 namespace Silly {
     class NondeterministicFiniteAutomaton : public DeterministicFiniteAutomaton {
     public:
