@@ -1,6 +1,6 @@
 #include <queue>
 #include <iostream>
-#include "SLScanner/NondeterministicFiniteAutomaton.h"
+#include "SLScanner/NondeterministicFiniteAutomaton.hpp"
 
 Silly::NondeterministicFiniteAutomaton::NondeterministicFiniteAutomaton(StateSet states_, TransitionSet transitions_,
                                                                         ETransitionSet etransitions_,
@@ -69,8 +69,10 @@ Silly::FiniteAutomaton::StateSet Silly::NondeterministicFiniteAutomaton::delta(S
 }
 
 void Silly::NondeterministicFiniteAutomaton::construct() {
-    if (constructed)
-        return;
+    if (constructed) {
+        if (!states.empty() && !alphabets.empty())
+            return;
+    }
     StateSet q0 = eClosure(StartState);
     std::set<StateSet> Q = {q0};
     std::queue<StateSet> working;
@@ -116,19 +118,16 @@ void Silly::NondeterministicFiniteAutomaton::construct() {
     std::cout << "\n";*/
     alphabets = nAlphabets;
     constructed = true;
-#if SL_GTEST_NO_CLEAN_NFA
-#else
-    nAlphabets.clear();
+    /*nAlphabets.clear();
     nAcceptingStates.clear();
     nStates.clear();
     nTransitions.clear();
-    nETransitions.clear();
-#endif
+    nETransitions.clear();*/
 }
 
 Silly::FiniteAutomaton::State Silly::NondeterministicFiniteAutomaton::match(std::string str) {
     construct();
-    reboot();
+    NondeterministicFiniteAutomaton::reboot();
     return DeterministicFiniteAutomaton::match(str);
 }
 

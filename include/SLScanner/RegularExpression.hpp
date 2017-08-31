@@ -1,7 +1,7 @@
 #ifndef SILLYCOMPLIER_REGULAREXPRESSION_H
 #define SILLYCOMPLIER_REGULAREXPRESSION_H
 
-#include "NondeterministicFiniteAutomaton.h"
+#include "NondeterministicFiniteAutomaton.hpp"
 #include <memory>
 
 #define SL_GTEST_PROTECTED_OPEN_RE 0

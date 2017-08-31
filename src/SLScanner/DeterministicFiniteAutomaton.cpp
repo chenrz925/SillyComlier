@@ -1,5 +1,5 @@
 #include <iostream>
-#include "SLScanner/DeterministicFiniteAutomaton.h"
+#include "SLScanner/DeterministicFiniteAutomaton.hpp"
 
 Silly::DeterministicFiniteAutomaton::State
 Silly::DeterministicFiniteAutomaton::transite(Silly::DeterministicFiniteAutomaton::Alphabet input) {

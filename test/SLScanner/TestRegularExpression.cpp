@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <SLScanner/RegularExpression.h>
+#include <SLScanner/RegularExpression.hpp>
 
 using namespace Silly;
 
@@ -29,19 +29,21 @@ TEST(RegularExpression, BaseFunctionTest) {
 }
 
 TEST(RegularExpression, BaseTest) {
-    RegularExpression testingRegularExpression0 = RegularExpression("1+3+5+(2+6)*");
-    RegularExpression testingRegularExpression1 = RegularExpression("a+(b|(c+a))*");
-    RegularExpression testingRegularExpression2 = RegularExpression("0+3+1+2+3+((1+2)|(7+4))*");
-    RegularExpression testingRegularExpression3 = RegularExpression("(1+(7|(5+6+(5|3)*)))*");
-    RegularExpression testingRegularExpression4 = RegularExpression("(a|b)*");
+    RegularExpression testingRegularExpression0("1+3+5+(2+6)*");
+    RegularExpression testingRegularExpression1("a+(b|(c+a))*");
+    RegularExpression testingRegularExpression2("0+3+1+2+3+((1+2)|(7+4))*");
+    RegularExpression testingRegularExpression3("(1+(7|(5+6+(5|3)*)))*");
+    RegularExpression testingRegularExpression4("(a|b)*");
     EXPECT_EQ(testingRegularExpression0["13526262626262626"], true);
+    EXPECT_EQ(testingRegularExpression0[""], false);
     EXPECT_EQ(testingRegularExpression1["abcabbbbbcacacacacacab"], true);
     EXPECT_EQ(testingRegularExpression1["a"], true);
+    EXPECT_EQ(testingRegularExpression1["abq"], false);
     EXPECT_EQ(testingRegularExpression3[""], true);
-    EXPECT_EQ(testingRegularExpression4["aaaaa"], true);
+    EXPECT_EQ(testingRegularExpression4["aaaaab"], true);
     EXPECT_EQ(testingRegularExpression3["15633333333333171717171717171717"], true);
 #if SL_GTEST_PRINT_FA_RE
-    testingRegularExpression.printDFA();
-    testingRegularExpression.printNFA();
+    testingRegularExpression1.printDFA();
+    testingRegularExpression1.printNFA();
 #endif
 }

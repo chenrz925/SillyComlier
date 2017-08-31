@@ -5,7 +5,7 @@
 #ifndef SILLYCOMPLIER_NONDETERMINISTICFINITEAUTOMATON_H
 #define SILLYCOMPLIER_NONDETERMINISTICFINITEAUTOMATON_H
 
-#include "SLScanner/DeterministicFiniteAutomaton.h"
+#include "SLScanner/DeterministicFiniteAutomaton.hpp"
 
 #define SL_GTEST_PROTECTED_OPEN_NFA 0
 #if SL_GTEST_PROTECTED_OPEN_NFA
@@ -13,8 +13,6 @@
 #include <gtest/gtest.h>
 
 #endif
-
-#define SL_GTEST_NO_CLEAN_NFA 0
 
 namespace Silly {
     class NondeterministicFiniteAutomaton : public DeterministicFiniteAutomaton {

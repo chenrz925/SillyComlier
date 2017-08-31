@@ -8,7 +8,7 @@
 #include <set>
 #include <map>
 #include <string>
-#include "SLScanner/FiniteAutomaton.h"
+#include "SLScanner/FiniteAutomaton.hpp"
 
 namespace Silly {
     class DeterministicFiniteAutomaton : public Silly::FiniteAutomaton {

@@ -1,4 +1,4 @@
-#include "SLScanner/RegularExpression.h"
+#include "SLScanner/RegularExpression.hpp"
 #include <stack>
 #include <queue>
 
@@ -27,7 +27,7 @@ RegularExpression::RegularExpression(std::string pattern_) {
 #endif
 #endif
     buildNFA();
-    reboot();
+    NondeterministicFiniteAutomaton::reboot();
 }
 
 NondeterministicFiniteAutomaton::StateType RegularExpression::operator()(std::string str) {

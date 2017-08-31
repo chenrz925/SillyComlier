@@ -1,4 +1,4 @@
-#include "SLScanner/FiniteAutomaton.h"
+#include "SLScanner/FiniteAutomaton.hpp"
 
 
 void Silly::FiniteAutomaton::reboot() {

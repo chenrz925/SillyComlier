@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "SLScanner/NondeterministicFiniteAutomaton.h"
+#include "SLScanner/NondeterministicFiniteAutomaton.hpp"
 
 using namespace Silly;
 
