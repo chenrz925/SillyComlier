@@ -139,4 +139,5 @@ void Silly::NondeterministicFiniteAutomaton::reboot() {
     currentAlphabet = EmptyAlphabet;
     currentState = 1;
     isFinished = false;
+    offset = 0;
 }

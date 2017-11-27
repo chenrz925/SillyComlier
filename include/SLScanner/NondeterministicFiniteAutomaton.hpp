@@ -7,7 +7,7 @@
 
 #include "SLScanner/DeterministicFiniteAutomaton.hpp"
 
-#define SL_GTEST_PROTECTED_OPEN_NFA 0
+#define SL_GTEST_PROTECTED_OPEN_NFA 1
 #if SL_GTEST_PROTECTED_OPEN_NFA
 
 #include <gtest/gtest.h>
@@ -56,6 +56,7 @@ namespace Silly {
 
         virtual void reboot();
     };
+    typedef NondeterministicFiniteAutomaton NFA;
 }
 
 

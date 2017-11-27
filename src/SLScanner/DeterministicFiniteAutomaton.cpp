@@ -11,9 +11,11 @@ Silly::DeterministicFiniteAutomaton::transite(Silly::DeterministicFiniteAutomato
         State nextState = transitions[Move(currentState, input)];
         currentState = nextState;
         currentAlphabet = input;
+        count();
         return nextState;
     } else {
         currentState = TrapState;
+        count();
         return TrapState;
     }
 }

@@ -29,12 +29,19 @@ namespace Silly {
         //运行状态
         State currentState;
         Alphabet currentAlphabet;
+        int offset;
         void reboot();
+        void count() {
+            offset++;
+        }
 
     public:
         FiniteAutomaton() {}
 
         StateType checkState(State state) const;
+        int length() const {
+            return offset;
+        }
     };
 
     const FiniteAutomaton::AlphabetSet NumberAlphabets = {
@@ -55,9 +62,14 @@ namespace Silly {
             'T', 'U', 'V', 'W', 'X',
             'Y', 'Z'
     };
+    const FiniteAutomaton::AlphabetSet DigitAlphabets = {
+            '0', '1', '2', '3', '4',
+            '5', '6', '7', '8', '9'
+    };
     const FiniteAutomaton::Alphabet EmptyAlphabet = -1;
     const FiniteAutomaton::State StartState = 0;
     const FiniteAutomaton::State TrapState = -1;
+    typedef FiniteAutomaton FA;
 }
 
 

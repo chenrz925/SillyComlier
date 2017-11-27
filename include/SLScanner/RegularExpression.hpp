@@ -49,6 +49,7 @@ namespace Silly {
         void printNFA();
 #endif
     };
+    typedef RegularExpression RE;
 }
 
 #endif //SILLYCOMPLIER_REGULAREXPRESSION_H

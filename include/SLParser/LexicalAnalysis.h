@@ -1,0 +1,10 @@
+//
+// Created by 陈润泽 on 27/11/2017.
+//
+
+#ifndef SILLYCOMPLIER_LEXICALANALYSIS_H
+#define SILLYCOMPLIER_LEXICALANALYSIS_H
+
+#include <SLParser/LexicalAnalysis.c>
+
+#endif //SILLYCOMPLIER_LEXICALANALYSIS_H

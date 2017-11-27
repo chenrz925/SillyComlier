@@ -29,6 +29,7 @@ namespace Silly {
 
         StateType operator()(std::string str);
     };
+    typedef DeterministicFiniteAutomaton DFA;
 }
 
 #endif //SILLYCOMPLIER_FINITEAUTOMATON_H

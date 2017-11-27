@@ -4,7 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-static GSList *__TOKEN_LIST__ = 0;
+extern GSList *__TOKEN_LIST__;
+GSList *__TOKEN_LIST__ = 0;
 static const char *__KEYWORD_LIST__[] = {"auto", "break", "case", "char", "const", "continue", "default", "do", "double", "else", "enum", "extern", "float", "for", "goto", "if", "inline", "int", "long", "register", "restrict", "return", "short", "signed", "sizeof", "static", "struct", "switch", "typedef", "union", "unsigned", "void", "volatile", "while", "_Alignas", "_Alignof", "_Atomic", "_Bool", "_Complex", "_Generic", "_Imaginary", "_Noreturn", "_Static_assert", "_Thread_local"};
 static long long __ID_NUMBER__ = 0;
 static long long __KEYWORD_NUMBER__ = 0;
@@ -14,7 +15,7 @@ static long long __CHAR_NUMBER__ = 0;
 static long long __INT_NUMBER__ = 0;
 static long long __FLOAT_NUMBER__ = 0;
 static long long __CHAR_COUNT__ = 0;
-static long long __LINE_COUNT__ = 1;
+static long long __LINE_COUNT__ = 0;
 
 typedef enum {
     ID, KEYWORD, PUNC, STRING, CHAR, INT, FLOAT
@@ -30,7 +31,7 @@ typedef struct {
 } IDToken;
 /*Keyword Token definition*/
 typedef enum {
-    AUTO, BREAK, CASE, _CHAR, CONST, CONTINUE, DEFAULT, DO, DOUBLE, ELSE, ENUM, EXTERN, _FLOAT, FOR, GOTO, IF, INLINE, _INT, LONG, REGISTER, RESTRICT, RETURN, SHORT, SIGNED, SIZEOF, STATIC, STRUCT, SWITCH, TYPEDEF, UNION, UNSIGNED, VOID, VOLATILE, WHILE, _ALIGNAS, _ALIGNOF, _ATOMIC, _BOOL, _COMPLEX, _GENERIC, _IMAGINARY, _NORETURN, _STATIC_ASSERT, _THREAD_LOCAL
+    AUTO, BREAK, CASE, _CHAR, CONST, CONTINUE, DEFAULT, DO, DOUBLE, ELSE, ENUM, EXTERN, _FLOAT, FOR, GOTO, IF, INLINE, _INT, LONG, REGISTER, RESTRICT, RETURN, SHORT, SIGNED, SIZEOF, STATIC, STRUCT, SWITCH, TYPEDEF, UNION, UNSIGNED, VOID, VOLATILE, WHILE, _ALIGNAS, _ALIGNOF, _ATOMIC, _BOOL, _COMPLEX, _GENERIC, _IMAGINARY, _NORETURN, _STATIC_ASSERT, _THREAD_LOCAL, NIL = -1
 } KeywordType;
 typedef struct {
     TokenType type;
@@ -62,7 +63,9 @@ typedef struct {
     long double value;
 } FloatToken;
 /*Constructor of Token*/
+
 Token *newToken(TokenType type, const char *yytext) {
+    __CHAR_COUNT__ += yyleng;
     switch (type) {
         case CHAR: {
             CharToken *token = (CharToken *) malloc(sizeof(CharToken));
@@ -130,10 +133,10 @@ Token *newToken(TokenType type, const char *yytext) {
         case KEYWORD: {
             KeywordToken *token = (KeywordToken *) malloc(sizeof(KeywordToken));
             token->type = KEYWORD;
-            token->keyword = -1;
+            token->keyword = NIL;
             for (int keyword = 0; keyword < sizeof(__KEYWORD_LIST__); ++keyword) {
                 if (!strcmp(__KEYWORD_LIST__[keyword], yytext)) {
-                    token->keyword = keyword;
+                    token->keyword = (KeywordType)keyword;
                     break;
                 }
             }
@@ -271,20 +274,36 @@ keyword (auto)|(break)|(case)|(char)|(const)|(continue)|(default)|(do)|(double)|
 [\n] {
     __LINE_COUNT__++;
 }
+<<EOF>> {
+    return 0;
+}
 %%
+#define IS_MAIN_FILE_YY_LEX 0
+#if IS_MAIN_FILE_YY_LEX
 int main(const int argc, const char **argv) {
+    char *inPath;
+    char *outPath;
     if (argc >= 2) {
         yyin = fopen(argv[1], "r");
+        inPath = (char *) argv[1];
     } else {
         yyin = stdin;
+        inPath = "stdin";
     }
     if (argc >= 3) {
         yyout = fopen(argv[2], "w");
+        outPath = (char *) argv[2];
     } else {
         yyout = stdout;
+        outPath = "stdout";
     }
     yylex();
-    printf("\n\nID: %lld,\nKEYWORD: %lld,\nPUNC: %lld,\nSTRING: %lld,\nCHAR: %lld,\nINT: %lld,\nFLOAT: %lld\n",
+    puts("\n----------");
+    puts("Lexical Analysis ver1.0 by Chen Runze");
+    puts("Report: ");
+    printf("Input file: %s\n", inPath);
+    printf("Output file: %s\n", outPath);
+    printf("ID: %lld,\nKEYWORD: %lld,\nPUNC: %lld,\nSTRING: %lld,\nCHAR: %lld,\nINT: %lld,\nFLOAT: %lld\n",
         __ID_NUMBER__,
         __KEYWORD_NUMBER__, 
         __PUNC_NUMBER__,
@@ -294,5 +313,7 @@ int main(const int argc, const char **argv) {
         __FLOAT_NUMBER__
     );
     printf("Line: %lld\n", __LINE_COUNT__);
+    printf("Char: %lld\n", __CHAR_COUNT__);
     return 0;
 }
+#endif
